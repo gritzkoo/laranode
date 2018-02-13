@@ -11,7 +11,6 @@ class RestController extends Controller
     {
         
         $tmp = $request->all();
-        Log::debug($tmp);
         $t = $tmp['Request'];
         $Service = $t['Service'];
         $Method = $t['Method'];

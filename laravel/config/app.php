@@ -1,5 +1,5 @@
 <?php
-
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 return [
 
     /*
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', "http://{$host}"),
 
     /*
     |--------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 const sk = require('socket.io');
 const MaqueRequest = require('../src/requester');
+const ChatModule = require('./pkg/chat');
 var connections = 0;
 module.exports = initSK;
 
@@ -17,12 +18,15 @@ function initSK(server) {
 		socket.on('HI', function (msg) {
 			io.to(socket.id).emit('HELLO', 'You are connected');
 		});
+
+		// inport pkgs
+		ChatModule(socket,io);
+		
 		socket.on('test', function (obj) {
-			MaqueRequest('MyClass', 'ola', {
-				msg: obj
-			}, function (response) {
+			MaqueRequest('MyClass', 'ola', obj, function (response) {
 				socket.emit('test_response', response);
 			});
 		});
+
 	});
 };

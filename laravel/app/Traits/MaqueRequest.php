@@ -24,14 +24,14 @@
             }
             catch (NegocioException $e)
             {
-                $context = ['status'=>0,'response'=>[],'message'=>$e->getMessage()];
+                $context = ['status'=>0,'response'=>null,'message'=>$e->getMessage()];
             }
             catch(Exception $e)
             {
-                $context = ['status'=>0,'response'=>[],'message'=>'A error has encontred, contact the system administrator'];
+                $context = ['status'=>0,'response'=>null,'message'=>'A error has encontred, contact the system administrator'];
             }
 
-            Log::info("{$class}@{$method} time:". round((microtime(true)-$start/1000),2).' ms' );
+            Log::info("{$class}@{$method} time:". number_format(round(((microtime(true)-$start)/1000),3),3,',','.').' ms' );
             return $context;
         }
     }

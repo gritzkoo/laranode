@@ -4,7 +4,7 @@
     <div class="col-md-4">
         <label>
                 Status da conexão do socket:
-                <strong data-bind="text:connected?'OK':'NOK'"></strong>
+                <strong data-bind="text:online()?'OK':'NOK'"></strong>
             </label>
     </div>
     <div class="col-md-4 form-group">
@@ -12,7 +12,7 @@
         <select class="form-control" data-bind="options:chat_list,optionsText:'name',optionsValue:'name',value:chat_room"></select>
         <label for="">Nome para entrar na sala:</label>
         <input class="form-control" type="text" data-bind="text:chat_user_name">
-        <button class="btn btn-default" data-bind="click:joinChatRoon">Entrar na sala de chat</button>
+        <button class="btn btn-default" data-bind="click:test">Entrar na sala de chat</button>
     </div>
     <div class="col-md-4" style="display:none;" data-bind="visible:enable_chat">
         <h2>Sala<strong data-bind="text:chat_room"></h2>
@@ -30,6 +30,7 @@
         function ViewModel()
         {
             var me = this;
+            me.online         = base.socket_online;
             me.sk             = socket;
             me.connected      = ko.observable(false);
             me.messages       = ko.observableArray();
@@ -44,10 +45,6 @@
                 {id:4,name:'Sala 4'},
                 {id:5,name:'Sala 5'},
             ]);
-            me.sendMessage = function()
-            {
-                if(!me.enable_chat()) return;
-            };
             me.joinChatRoon   = function()
             {
                 if(!me.chat_room() || !me.chat_user_name())
@@ -61,21 +58,16 @@
                     'id':me.sk.id
                 });
             }
-            me.sk.on('confirm_join', function(data)
+            me.test = function()
             {
-                console.log(data);
-                me.enable_chat(true);
-            });
-            me.checkConnection = function()
-            {
-                me.sk.emit('HI','there');
+                socket.emit('test',{txt:'olá'});
             };
-            me.sk.on('HELLO', function(what){
-                me.connected(true);
-            })
+            me.sk.on('test_response', function(res)
+            {
+                console.log(res);
+            });
         }
         var vm = new ViewModel();
-        vm.checkConnection();
         ko.applyBindings(vm, document.getElementById('chatko'));
     </script>
 @endsection

@@ -1,6 +1,6 @@
 const rp = require('request-promise');
-const backend_url = 'http://localhost:806/rest';
-
+const backend_url = 'http://localhost:8001/rest';
+import('../config');
 module.exports = MakeRequest;
 
 function MakeRequest(Service, Method, Params, callback) {
